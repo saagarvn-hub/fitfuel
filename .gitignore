@@ -1,0 +1,22 @@
+# Database config (contains local credentials)
+includes/config.php
+
+# Uploaded files (user images)
+uploads/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
+error_log
+
+# Composer
+vendor/
+composer.lock
