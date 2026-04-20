@@ -18,14 +18,18 @@ if (isset($current_user_id) && isset($profile) && $profile) {
     $sidebar_user = $profile;
 }
 
+// Get CSS version for cache busting (forces fresh load on all devices)
+$css_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css';
+$css_version = file_exists($css_file) ? filemtime($css_file) : '1';
+
 // Define navigation items
 $nav_items = [
     'dashboard' => ['📊', 'Dashboard', 'index.php'],
     'diary' => ['📋', 'Meal Diary', 'diary.php'],
     'dishes' => ['🥗', 'Recipes', 'dishes.php'],
     'planner' => ['📅', 'Meal Planner', 'meal-planner.php'],
-    'weight-tracker' => ['⚖️', 'Weight Tracker', 'weight-tracker.php'],
-    'water-tracker' => ['💧', 'Water Tracker', 'water-tracker.php'],
+    'weight-tracker' => ['⚖️', 'Weight Tracker', 'weightlog.php'],
+    'water-tracker' => ['💧', 'Water Tracker', 'waterlog.php'],
 ];
 
 $bottom_nav_items = [
@@ -45,7 +49,8 @@ $bottom_nav_items = [
     <title><?= htmlspecialchars($page_title) ?> — FitFuel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
+    <!-- CSS with cache busting - forces fresh load on all devices -->
+    <link rel="stylesheet" href="/assets/css/style.css?v=<?= $css_version ?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
         (function() {
@@ -150,7 +155,7 @@ $bottom_nav_items = [
 </aside>
 
 <div class="main-content">
-    <!-- Mobile Header - ONLY shows on mobile, NO action buttons -->
+    <!-- Mobile Header -->
     <div class="mobile-header">
         <div class="mobile-logo">
             <?php if ($show_back_button): ?>
@@ -161,15 +166,14 @@ $bottom_nav_items = [
             </button>
             <?php endif; ?>
             <button class="mobile-hamburger" onclick="toggleSidebar()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="3" y1="6" x2="21" y2="6"/>
                     <line x1="3" y1="12" x2="21" y2="12"/>
                     <line x1="3" y1="18" x2="21" y2="18"/>
                 </svg>
             </button>
-            <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem; margin-left:5px;">FitFuel</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem; margin-left:8px;">FitFuel</span>
         </div>
-        <!-- NO action buttons here - they are in the page-header of each page -->
     </div>
 
     <?= renderFlash() ?>

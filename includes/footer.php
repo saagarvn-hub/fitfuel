@@ -2,12 +2,16 @@
 // ============================================
 // MAIN FOOTER
 // ============================================
+// Get JS version for cache busting
+$js_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/js/script.js';
+$js_version = file_exists($js_file) ? filemtime($js_file) : '1';
 ?>
     </div><!-- .main-content -->
 </div><!-- #app -->
 
-<script src="<?= BASE_URL ?>/assets/js/script.js"></script>
+<script src="/assets/js/script.js?v=<?= $js_version ?>"></script>
 <script>
+    // Auto-hide loader and show app
     window.addEventListener('load', function() {
         setTimeout(function() {
             var loader = document.getElementById('loader');
@@ -17,6 +21,7 @@
         }, 300);
     });
     
+    // Animate progress bars
     document.querySelectorAll('.progress-fill[data-pct]').forEach(function(el) {
         var pct = Math.min(parseFloat(el.dataset.pct) || 0, 100);
         setTimeout(function() { el.style.width = pct + '%'; }, 100);
